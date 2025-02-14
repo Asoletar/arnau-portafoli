@@ -38,7 +38,7 @@ function HomeTitle() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center mt-10">
+    <div className="flex justify-center items-center mt-10 px-6 sm:px-8">
       <svg ref={titleRef} className="w-auto h-36 md:h-48 lg:h-56" viewBox="0 0 500 150">
         <image href={darkMode ? "/TitolW.svg" : "/TitolB.svg"} width="100%" height="100%" />
       </svg>
