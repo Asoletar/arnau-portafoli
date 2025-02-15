@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import emailjs from "@emailjs/browser"; // ✅ Importem EmailJS
+import emailjs from "@emailjs/browser"; // ✅ Importació d'EmailJS
 import gsap from "gsap";
 
 function ContactPage() {
@@ -14,7 +14,6 @@ function ContactPage() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    // Animació d'entrada
     gsap.fromTo(
       formRef.current,
       { opacity: 0, y: 30 },
@@ -31,27 +30,35 @@ function ContactPage() {
     }));
   };
 
-  // ✅ Funció per enviar el correu electrònic mitjançant EmailJS
+  // ✅ Funció per enviar el correu electrònic amb EmailJS
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!formData.acceptTerms) {
-      alert("Has de acceptar la política de privacitat per continuar.");
+      alert("Has d'acceptar la política de privacitat per continuar.");
       return;
     }
 
-    // 📌 Configura aquí les teves credencials d'EmailJS
-    const serviceID = "service_XXXXXX"; // ⚠️ Substitueix pel teu Service ID
-    const templateID = "template_XXXXXX"; // ⚠️ Substitueix pel teu Template ID
-    const publicKey = "YOUR_PUBLIC_KEY"; // ⚠️ Substitueix per la teva clau pública d'EmailJS
+    console.log("🟢 Intentant enviar amb EmailJS...");
 
-    emailjs.send(serviceID, templateID, formData, publicKey)
+    const serviceID = "service_14rgdxn"; // ✅ Service ID correcte
+    const templateID = "template_o7tjqmn"; // ✅ Template ID correcte
+    const publicKey = "3a9nYb4Qso2h-In9t"; // ✅ Clau pública correcta
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    emailjs.send(serviceID, templateID, templateParams, publicKey)
       .then((response) => {
-        console.log("✅ Correu enviat!", response.status, response.text);
+        console.log("✅ Correu enviat correctament!", response);
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 4000);
       })
       .catch((error) => {
-        console.error("❌ Error en l'enviament", error);
+        console.error("❌ Error en l'enviament:", error);
       });
   };
 
@@ -146,6 +153,7 @@ function ContactPage() {
 }
 
 export default ContactPage;
+
 
 
 
