@@ -15,16 +15,17 @@ const categories = [
     title: "Branding e Identidad Visual",
     bgColor: "bg-green-500",
     projects: [
-      { title: "Rebranding Corporativo", media: "/branding1.jpg", description: "Rediseño completo de una marca para actualizar su identidad visual." },
-      { title: "Logo y Manual de Marca", media: "/branding2.jpg", description: "Creación de un logo profesional y su correspondiente manual de marca." },
+      { title: "Rebranding Corporativo", media: "/intecma2.png", description: "Rediseño completo de una marca para actualizar su identidad visual." },
+      { title: "Logo de Marca", media: "/gargot2.png", description: "Creación de un logo profesional y sus variantes corporativas." },
+      { title: "Manual de Marca", media: "/guia.png", description: "Creación del manual de marca de una tienda en línea." },
     ],
   },
   {
     title: "Animaciones Motion Graphics",
     bgColor: "bg-red-500",
     projects: [
-      { title: "Spot Publicitario", media: "/motion1.mp4", description: "Animación de 30 segundos para redes sociales con un enfoque dinámico." },
-      { title: "Animación 3D", media: "/motion2.mp4", description: "Escena 3D renderizada con efectos de iluminación avanzada." },
+      { title: "Logo Animado", media: "/CarLogo.mp4", description: "Animación de de logotipo para redes sociales con un enfoque dinámico." },
+      { title: "Animación de marca", media: "/Promo_Logo.mp4", description: "Escena dinámica de animación para promoción de marca." },
     ],
   },
   {
