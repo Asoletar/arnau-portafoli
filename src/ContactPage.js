@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser"; // ✅ Importem EmailJS
 import gsap from "gsap";
 
 function ContactPage() {
@@ -14,6 +14,7 @@ function ContactPage() {
   const formRef = useRef(null);
 
   useEffect(() => {
+    // Animació d'entrada
     gsap.fromTo(
       formRef.current,
       { opacity: 0, y: 30 },
@@ -30,40 +31,28 @@ function ContactPage() {
     }));
   };
 
-  // 📨 **Enviament amb EmailJS**
+  // ✅ Funció per enviar el correu electrònic mitjançant EmailJS
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (!formData.acceptTerms) {
       alert("Has de acceptar la política de privacitat per continuar.");
       return;
     }
 
-    // Enviar el formulari amb EmailJS
-    emailjs.sendForm(
-      "service_14rgdxn", // 🔹 El teu Service ID d'EmailJS
-      "template_xxxxxxx", // 🔹 El teu Template ID d'EmailJS
-      e.target,
-      "user_xxxxxxxxx" // 🔹 El teu Public Key d'EmailJS
-    )
-    .then(
-      (result) => {
-        console.log("Email enviat correctament!", result.text);
+    // 📌 Configura aquí les teves credencials d'EmailJS
+    const serviceID = "service_XXXXXX"; // ⚠️ Substitueix pel teu Service ID
+    const templateID = "template_XXXXXX"; // ⚠️ Substitueix pel teu Template ID
+    const publicKey = "YOUR_PUBLIC_KEY"; // ⚠️ Substitueix per la teva clau pública d'EmailJS
+
+    emailjs.send(serviceID, templateID, formData, publicKey)
+      .then((response) => {
+        console.log("✅ Correu enviat!", response.status, response.text);
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 4000);
-      },
-      (error) => {
-        console.log("Error en enviar email:", error.text);
-      }
-    );
-
-    e.target.reset();
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-      acceptTerms: false,
-    });
+      })
+      .catch((error) => {
+        console.error("❌ Error en l'enviament", error);
+      });
   };
 
   return (
@@ -73,12 +62,13 @@ function ContactPage() {
         ¿Tienes un proyecto en mente? Rellena el formulario y me pondré en contacto contigo lo antes posible.
       </p>
 
-      {/* Formulari */}
+      {/* 📝 Formulari de contacte */}
       <form
         ref={formRef}
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 space-y-6 transition-all duration-500"
       >
+        {/* Nom */}
         <div>
           <label className="block text-gray-700 dark:text-gray-300 font-medium">Nombre</label>
           <input
@@ -91,6 +81,7 @@ function ContactPage() {
           />
         </div>
 
+        {/* Correu electrònic */}
         <div>
           <label className="block text-gray-700 dark:text-gray-300 font-medium">Correo electrónico</label>
           <input
@@ -103,6 +94,7 @@ function ContactPage() {
           />
         </div>
 
+        {/* Missatge */}
         <div>
           <label className="block text-gray-700 dark:text-gray-300 font-medium">Mensaje</label>
           <textarea
@@ -115,6 +107,7 @@ function ContactPage() {
           ></textarea>
         </div>
 
+        {/* Checkbox acceptació legal */}
         <div className="flex items-start space-x-3">
           <input
             type="checkbox"
@@ -133,6 +126,7 @@ function ContactPage() {
           </label>
         </div>
 
+        {/* Botó Enviar */}
         <button
           type="submit"
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
@@ -140,6 +134,7 @@ function ContactPage() {
           Enviar mensaje
         </button>
 
+        {/* Missatge de confirmació */}
         {submitted && (
           <p className="mt-4 text-green-600 dark:text-green-400 font-semibold text-center">
             ✅ ¡Mensaje enviado correctamente!
@@ -151,5 +146,6 @@ function ContactPage() {
 }
 
 export default ContactPage;
+
 
 
