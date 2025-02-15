@@ -141,9 +141,9 @@ function ContactPage() {
           />
           <label className="text-gray-700 dark:text-gray-300">
             Acepto la{" "}
-            <a href="/politica-privacidad" className="text-indigo-600 dark:text-indigo-300 underline">
+            <Link to="/politica-privacidad" className="text-indigo-600 dark:text-indigo-300 underline">
               política de privacidad
-            </a>
+            </Link>
             .
           </label>
         </div>

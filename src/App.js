@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import AboutPage from "./AboutPage"; // Pàgina 'Sobre Mi'
 import PortfolioPage from "./PortfolioPage"; // Pàgina 'Portafoli'
 import ContactPage from "./ContactPage"; // Pàgina 'Contacte'
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/sobre-mi" element={<AboutPage />} />
             <Route path="/portafolio" element={<PortfolioPage />} />
             <Route path="/contacto" element={<ContactPage />} />
+            <Route path="/politica-privacidad" element={<PrivacyPolicy />} />
           </Routes>
         </main>
         <Footer />
