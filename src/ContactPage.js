@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import emailjs from "@emailjs/browser"; // ✅ Importació d'EmailJS
+import emailjs from "@emailjs/browser";
 import gsap from "gsap";
 
 function ContactPage() {
@@ -21,6 +21,16 @@ function ContactPage() {
     );
   }, []);
 
+  // 🔹 Funció per reiniciar el formulari
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+      acceptTerms: false,
+    });
+  };
+
   // Gestió de canvis en els inputs
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,21 +51,23 @@ function ContactPage() {
 
     console.log("🟢 Intentant enviar amb EmailJS...");
 
-    const serviceID = "service_14rgdxn"; // ✅ Service ID correcte
-    const templateID = "template_o7tjqmn"; // ✅ Template ID correcte
-    const publicKey = "3a9nYb4Qso2h-In9t"; // ✅ Clau pública correcta
+    const serviceID = "service_14rgdxn";
+    const templateID = "template_o7tjqmn";
+    const publicKey = "3a9nYb4Qso2h-In9t";
 
     const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      message: formData.message,
+      user_name: formData.name, // 🔹 Canviem a user_name per assegurar compatibilitat amb el template d'EmailJS
+      user_email: formData.email, // 🔹 Canviem a user_email per assegurar compatibilitat
+      user_message: formData.message,
     };
 
     emailjs.send(serviceID, templateID, templateParams, publicKey)
       .then((response) => {
         console.log("✅ Correu enviat correctament!", response);
         setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 4000);
+        resetForm(); // 🔹 Reiniciem el formulari després de l'enviament
+
+        setTimeout(() => setSubmitted(false), 6000); // 🔹 Mostrem el missatge més temps
       })
       .catch((error) => {
         console.error("❌ Error en l'enviament:", error);
@@ -153,6 +165,7 @@ function ContactPage() {
 }
 
 export default ContactPage;
+
 
 
 
