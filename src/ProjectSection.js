@@ -1,47 +1,53 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
+
+gsap.registerPlugin(Draggable);
 
 function ProjectSection({ category }) {
   const [currentProject, setCurrentProject] = useState(0);
   const projectContainerRef = useRef(null);
   const autoplay = true;
-  const autoplayInterval = 6000; // 🔹 Temps entre canvis
+  const autoplayInterval = 6000; // ⏳ Temps entre canvis
 
-  // 🔥 Transició totalment suau, sense brusquedats
+  // ✅ **Funció per transicions fluides amb màscara**
   const transitionProject = useCallback((newIndex, direction) => {
     const projects = projectContainerRef.current.children;
     const directionMultiplier = direction === "right" ? 1 : -1;
 
-    // 🔹 Assegurar que l'opacitat sigui 1 abans de la transició
-    gsap.set(projects[currentProject], { opacity: 1 });
-
+    // 🔹 Creació de màscara de sortida
     gsap.to(projects[currentProject], {
       x: `${-100 * directionMultiplier}%`,
-      opacity: 0, // 🔹 Ara desapareix correctament
-      duration: 1.2,
+      opacity: 0,
+      clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)", // Màscara inicial
+      duration: 1.3,
       ease: "power3.inOut",
     });
 
+    // 🔹 Creació de màscara d'entrada
     gsap.fromTo(
       projects[newIndex],
-      { x: `${100 * directionMultiplier}%`, opacity: 0 },
-      { x: "0%", opacity: 1, duration: 1.2, ease: "power3.inOut" }
+      { x: `${100 * directionMultiplier}%`, opacity: 0, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" },
+      { x: "0%", opacity: 1, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)", duration: 1.3, ease: "power3.inOut" }
     );
 
     setTimeout(() => {
       setCurrentProject(newIndex);
-    }, 500);
+    }, 650);
   }, [currentProject]);
 
+  // 🔹 **Botó NEXT**
   const nextProject = useCallback(() => {
     transitionProject((currentProject + 1) % category.projects.length, "right");
   }, [currentProject, category.projects.length, transitionProject]);
 
+  // 🔹 **Botó PREV**
   const prevProject = useCallback(() => {
     transitionProject((currentProject - 1 + category.projects.length) % category.projects.length, "left");
   }, [currentProject, category.projects.length, transitionProject]);
 
+  // 🔹 **Autoplay**
   useEffect(() => {
     if (autoplay) {
       const interval = setInterval(() => {
@@ -51,13 +57,28 @@ function ProjectSection({ category }) {
     }
   }, [currentProject, autoplay, nextProject]);
 
+  // 🔹 **Gest de lliscament tàctil per mòbils**
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "ArrowRight") nextProject();
-      if (event.key === "ArrowLeft") prevProject();
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) nextProject(); // Lliscar cap a l'esquerra -> següent
+      if (touchEndX > touchStartX + 50) prevProject(); // Lliscar cap a la dreta -> anterior
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
   }, [nextProject, prevProject]);
 
   return (
@@ -70,12 +91,12 @@ function ProjectSection({ category }) {
           <div
             key={index}
             className="absolute w-full h-full flex flex-col items-center justify-center text-center"
-            style={{ 
+            style={{
               visibility: index === currentProject ? "visible" : "hidden",
-              opacity: index === currentProject ? 1 : 0, // 🔹 Ara l'opacitat es gestiona correctament
+              opacity: index === currentProject ? 1 : 0,
             }}
           >
-            {/* 🔥 Imatge/Vídeo amb mida ajustada automàticament */}
+            {/* 🔥 Imatge/Vídeo amb màscara suau */}
             <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden rounded-lg shadow-lg">
               {project.media.endsWith(".mp4") ? (
                 <video
@@ -100,8 +121,8 @@ function ProjectSection({ category }) {
         ))}
       </div>
 
-      {/* Botons de navegació */}
-      <div className="flex items-center mt-6 space-x-6">
+      {/* 🔹 BOTONS de navegació (només en desktop) */}
+      <div className="hidden md:flex items-center mt-6 space-x-6">
         <button
           onClick={prevProject}
           className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:scale-110 transition duration-300 shadow-lg"
@@ -117,7 +138,7 @@ function ProjectSection({ category }) {
         </button>
       </div>
 
-      {/* Punts de navegació */}
+      {/* 🔹 Punts de navegació */}
       <div className="flex space-x-3 mt-6">
         {category.projects.map((_, index) => (
           <button
@@ -134,6 +155,7 @@ function ProjectSection({ category }) {
 }
 
 export default ProjectSection;
+
 
 
 
