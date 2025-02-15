@@ -55,11 +55,14 @@ function ContactPage() {
     const templateID = "template_o7tjqmn";
     const publicKey = "3a9nYb4Qso2h-In9t";
 
+    // 📌 Creem un objecte FormData perquè EmailJS rebi les dades correctament
     const templateParams = {
-      user_name: formData.name, // 🔹 Canviem a user_name per assegurar compatibilitat amb el template d'EmailJS
-      user_email: formData.email, // 🔹 Canviem a user_email per assegurar compatibilitat
-      user_message: formData.message,
+      user_name: formData.name.trim(),
+      user_email: formData.email.trim(),
+      user_message: formData.message.trim(),
     };
+
+    console.log("📨 Dades enviades a EmailJS:", templateParams); // 🔹 Debug per veure què s'està enviant
 
     emailjs.send(serviceID, templateID, templateParams, publicKey)
       .then((response) => {
@@ -67,7 +70,7 @@ function ContactPage() {
         setSubmitted(true);
         resetForm(); // 🔹 Reiniciem el formulari després de l'enviament
 
-        setTimeout(() => setSubmitted(false), 6000); // 🔹 Mostrem el missatge més temps
+        setTimeout(() => setSubmitted(false), 8000); // 🔹 Allarguem el temps de confirmació
       })
       .catch((error) => {
         console.error("❌ Error en l'enviament:", error);
@@ -165,6 +168,7 @@ function ContactPage() {
 }
 
 export default ContactPage;
+
 
 
 
