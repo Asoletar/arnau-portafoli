@@ -7,7 +7,7 @@ import Footer from "./Footer";
 import AboutPage from "./AboutPage"; // Pàgina 'Sobre Mi'
 import PortfolioPage from "./PortfolioPage"; // Pàgina 'Portafoli'
 import ContactPage from "./ContactPage"; // Pàgina 'Contacte'
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 function App() {
   return (
