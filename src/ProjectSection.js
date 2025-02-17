@@ -105,7 +105,16 @@ function ProjectSection({ category }) {
           >
             <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden rounded-lg shadow-lg">
               {project.media.endsWith(".mp4") ? (
-                <video src={project.media} autoPlay loop muted className="w-full h-full object-contain" />
+                window.innerWidth < 768 ? (
+                  <img
+                    src={project.thumbnail}
+                    alt={project.title}
+                    className="w-full h-full object-contain cursor-pointer"
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ) : (
+                  <video src={project.media} autoPlay loop muted className="w-full h-full object-contain" />
+                )
               ) : (
                 <img src={project.media} alt={project.title} className="w-full h-full object-contain" />
               )}
@@ -147,6 +156,7 @@ function ProjectSection({ category }) {
 }
 
 export default ProjectSection;
+
 
 
 

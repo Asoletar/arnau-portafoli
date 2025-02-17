@@ -27,19 +27,19 @@ const categories = [
       {
         title: "Logo Animado",
         media: "/CarLogo.mp4",
-        thumbnail: "/thumbnails/CarTech.png", // ✅ Miniatura manual per a mòbils
+        thumbnail: "/CarTech.png", // ✅ Miniatura manual per a mòbils
         description: "Animación de logotipo para redes sociales con un enfoque dinámico."
       },
       {
         title: "Animación de Marca",
         media: "/Promo_Logo.mp4",
-        thumbnail: "/thumbnails/Promo_Logo.png", // ✅ Miniatura manual per a mòbils
+        thumbnail: "/Promo_Logo.png", // ✅ Miniatura manual per a mòbils
         description: "Escena dinámica de animación para promoción de marca."
       },
       {
         title: "Títulos de Crédito",
         media: "/Moduls.mp4",
-        thumbnail: "/thumbnails/Moduls.png", // ✅ Miniatura manual per a mòbils
+        thumbnail: "/Moduls.png", // ✅ Miniatura manual per a mòbils
         description: "Introducción de títulos de crédito del proyecto cinematográfico Moduls."
       },
     ],
