@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
-import VideoModal from "./VideoModal"; // 🔹 Importem el modal
+import VideoModal from "./VideoModal";
 
 gsap.registerPlugin(Draggable);
 
 function ProjectSection({ category }) {
   const [currentProject, setCurrentProject] = useState(0);
-  const [selectedProject, setSelectedProject] = useState(null); // 🔹 Estat per obrir el modal
+  const [selectedProject, setSelectedProject] = useState(null);
   const projectContainerRef = useRef(null);
   const autoplay = true;
   const autoplayInterval = 6000;
@@ -52,6 +52,41 @@ function ProjectSection({ category }) {
     }
   }, [currentProject, autoplay, nextProject]);
 
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isDragging = false;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      isDragging = true;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isDragging) return;
+      touchEndX = e.changedTouches[0].screenX;
+    };
+
+    const handleTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = touchEndX - touchStartX;
+
+      if (diff < -50) nextProject();
+      if (diff > 50) prevProject();
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [nextProject, prevProject]);
+
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center text-white ${category.bgColor} py-16 relative overflow-hidden`}>
       <h2 className="text-5xl font-bold mb-8">{category.title}</h2>
@@ -66,7 +101,7 @@ function ProjectSection({ category }) {
               visibility: index === currentProject ? "visible" : "hidden",
               opacity: index === currentProject ? 1 : 0,
             }}
-            onClick={() => setSelectedProject(project)} // 🔹 Obrir modal quan es faci clic
+            onClick={() => setSelectedProject(project)}
           >
             <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden rounded-lg shadow-lg">
               {project.media.endsWith(".mp4") ? (
@@ -82,18 +117,8 @@ function ProjectSection({ category }) {
         ))}
       </div>
 
-      {/* BOTONS de navegació */}
-      <div className="hidden md:flex items-center mt-6 space-x-6">
-        <button onClick={prevProject} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:scale-110 transition duration-300 shadow-lg">
-          <ChevronLeft size={30} />
-        </button>
-        <button onClick={nextProject} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:scale-110 transition duration-300 shadow-lg">
-          <ChevronRight size={30} />
-        </button>
-      </div>
-
-      {/* Punts de navegació */}
-      <div className="flex space-x-3 mt-6">
+      {/* PUNTS DE NAVIGACIÓ INTERACTIUS */}
+      <div className="flex space-x-2 mt-6">
         {category.projects.map((_, index) => (
           <button
             key={index}
@@ -105,6 +130,16 @@ function ProjectSection({ category }) {
         ))}
       </div>
 
+      {/* BOTONS de navegació */}
+      <div className="hidden md:flex items-center mt-6 space-x-6">
+        <button onClick={prevProject} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:scale-110 transition duration-300 shadow-lg">
+          <ChevronLeft size={30} />
+        </button>
+        <button onClick={nextProject} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:scale-110 transition duration-300 shadow-lg">
+          <ChevronRight size={30} />
+        </button>
+      </div>
+
       {/* MODAL per mostrar el vídeo en gran */}
       {selectedProject && <VideoModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </div>
@@ -112,6 +147,10 @@ function ProjectSection({ category }) {
 }
 
 export default ProjectSection;
+
+
+
+
 
 
 

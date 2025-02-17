@@ -25,15 +25,18 @@ const categories = [
     bgColor: "bg-red-500",
     projects: [
       { title: "Logo Animado", media: "/CarLogo.mp4", description: "Animación de de logotipo para redes sociales con un enfoque dinámico." },
-      { title: "Animación de marca", media: "/Promo_Logo.mp4", description: "Escena dinámica de animación para promoción de marca." },
+      { title: "Animación de Marca", media: "/Promo_Logo.mp4", description: "Escena dinámica de animación para promoción de marca." },
+      { title: "Títulos de Crédito", media: "/Moduls.mp4", description: "Introducción de títulos de crédito del proyecto cinematográfico Moduls" },
     ],
   },
   {
     title: "Diseño Gráfico",
     bgColor: "bg-yellow-500",
     projects: [
-      { title: "Cartel Publicitario", media: "/design1.jpg", description: "Diseño de un cartel con tipografía experimental y elementos gráficos innovadores." },
-      { title: "Infografía Interactiva", media: "/design2.jpg", description: "Infografía digital con animaciones que explican visualmente datos complejos." },
+      { title: "Diseño Indiustrial", media: "/CarbonCraft.png", description: "Diseño de displays de barco y la implementación en colaboración con un programador electrónico" },
+      { title: "Carteles Publicitarios", media: "/Cartells.png", description: "Diseño de carteles con tipografía experimental y elementos gráficos innovadores." },
+      { title: "Poster de Presentación", media: "/Hortmapp.png", description: "Póster informativo del proyecyo Hortmapp, una app de agricultura urbana optimizada" },
+      { title: "Newsletters", media: "/Newsletters.png", description: "Diseño de Newsletters para la difusion publicitaria de una agencia de viajes" },
     ],
   },
 ];
